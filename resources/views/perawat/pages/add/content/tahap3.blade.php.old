@@ -1,0 +1,864 @@
+<div class="col-lg-12 col-md-12 tahap31" style="padding: 0px">
+	<!-- <script src="{!!  asset('adminAsset/js/jquery-1.9.1.min.js') !!}" type="text/javascript"></script> -->
+
+	<?php $rekap = DB::table('rekap_medik')->where('id_rekapMedik',Session::get('id_rekap'))->first(); ?>
+	<form id="tahap3">
+		<input type="hidden" id="NamaPerawatPakai" name="nama" readonly value="{!! $rekap->nama_perawat !!}">
+		<div class="col-lg-12 col-md-12">
+			<a href="{{route('cetak3')}}" target="_blank" class="btn pull-right" title="Cetak"><i class="fa fa-print"></i></a>
+			<a href="{{route('cetak3',['download'=>'pdf'])}}" class="btn pull-right" title="Export"><i class="fa fa-file"></i></a>
+		</div>
+		<div class="clearfix"></div>
+		<style type="text/css">
+			.form1{
+				width: 70% !important;
+				display:inline !important;
+			}
+		</style>
+		<!-- TANDA VITAL & ANTROPOMETRI -->
+		<div class="col-lg-12 col-md-12">
+			<i><b style="color: red">(*) </b>wajib diisi, jika tidak ada beri <b> - </b></i>
+		</div>
+		<div class="clearfix" style="margin-bottom: 10px;"></div>
+		<div class="col-lg-12 col-md-12">
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Tanggal/Jam Pengerjaan</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<input type="text" name="" class="form-control" value="{!! date('d-m-Y, h:i:s', strtotime($rekap->tanggalPengerjaan)) !!}">
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pendaftaran Melalui</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+						$check = ['checked',''];
+						if (isset($check->daftar_melalui)) {
+							if($rekap->daftar_melalui=='On'){
+								$check= ['checked',''];
+							} elseif($rekap->daftar_melalui=='Off'){
+								$check= ['','checked'];
+							}
+						}
+					?>
+					<label> <input type="radio" {!! $check[0] !!} name="daftar_melalui" value="On" checked> Online</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Off" name="daftar_melalui"> Offline</label>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Kategori Pembayaran</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+						$display = 'display: none';
+						$check = ['checked','', ''];
+						if (isset($check->kategori_pembayaran)) {
+							if($rekap->kategori_pembayaran=='UMUM'){
+								$check= ['checked', '', ''];
+							} elseif($rekap->kategori_pembayaran=='BPJS'){
+								$check= ['', 'checked', ''];
+							} else {
+								$check= ['', '', 'checked'];
+							}
+						}
+					?>
+					<label> <input type="radio" {!! $check[0] !!} name="kategori_pembayaran" value="UMUM" checked> UMUM</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="BPJS" name="kategori_pembayaran"> BPJS</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Lainnye" name="kategori_pembayaran"> Asuransi Lainnya</label>
+					<input type="text" name="kategori_lainnya" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="">
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Keluhan Utama</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<textarea name="keluhan_utama" style="width: 100%;">{{(isset($rekap->keluhan_utama))?$rekap->keluhan_utama:''}}</textarea>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+		</div>
+		<div class="clearfix" style="margin-bottom: 10px;"></div>
+		<hr>
+		<div class="col-lg-12 col-md-12">
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Riwayat Kesehatan</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$check = ['',''];
+					$display1 = 'display: none';
+					if (isset($check->riwayat_kesehatan)) {
+						if($rekap->riwayat_kesehatan=='N'){
+							$check= ['checked',''];
+							$display1 = '';
+						} elseif($rekap->riwayat_kesehatan !='N' && $rekap->riwayat_kesehatan != ''){
+							$check= ['','checked'];
+						}
+					}
+					?>
+					<label> <input type="radio" {!! $check[0] !!} name="riwayat_kesehatan" value="N" checked> Tidak Pernah Opname</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Y" name="riwayat_kesehatan"> Pernah Opname</label>
+					<span id="dengan_sakit" style="{{$display1}}"><label style="margin-left: 10px">Dengan sakit: &nbsp; <input type="text" value="" name="sakit_opname"></label>
+					</span>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Riwayat Operasi</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$check = ['',''];
+					$display1 = 'display: none';
+					if (isset($check->riwayat_operasi)) {
+						if($rekap->riwayat_operasi=='N'){
+							$check= ['checked',''];
+							$display1 = '';
+						} elseif($rekap->riwayat_operasi !='N' && $rekap->riwayat_operasi != ''){
+							$check= ['','checked'];
+						}
+					}
+					?>
+					<label> <input type="radio" {!! $check[0] !!} name="riwayat_operasi" value="N" checked> Tidak</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Y" name="riwayat_operasi"> Pernah Opname</label>
+					<span id="operasi_hari_ke" style="{{$display1}}"><label style="margin-left: 10px">Pasca operasi hari ke: &nbsp; <input type="text" value="" name="operasi_hari_ke"></label>
+					</span>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Riwayat KB</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+						$check = ['checked',''];
+						$display1 = 'display: none';
+						if (isset($check->riwayat_kb)) {
+							if($rekap->riwayat_kb=='Y'){
+								$check= ['','checked'];
+								$display1 = '';
+							} else{
+								$check= ['checked',''];
+							}
+						}
+					?>
+					<label> <input type="radio" {!! $check[0] !!} name="riwayat_kb" value="N" checked> Tidak</label>
+					<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Y" name="riwayat_kb"> Ya</label>
+					<span id="lama_pemakaian" class="kbY" style="{!! $display1 !!}"><label style="margin-left: 10px">Lama Pemakaian: &nbsp; <input type="text" value="" name="lama_pemakaian"></label></span>
+				</div>
+			</div>
+			<div class="form-group kbY" style="{!! $display1 !!}">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12"></label>
+				<label class="col-lg-1 col-md-1 col-sm-12 col-xs-12">Jenis: </label>
+				<?php
+					$check = ['', '', '', '', '', ''];
+					$display1 = 'display: none';
+					if (isset($check->riwayat_kb)) {
+						if($rekap->jenis_kb=='Suntik'){
+							$check= ['checked', '', '', '', '', ''];
+						} elseif($rekap->jenis_kb=='Pil'){
+							$check= ['', 'checked', '', '', '', ''];
+						} elseif($rekap->jenis_kb=='IUD'){
+							$check= ['', '', 'checked', '', '', ''];
+						} elseif($rekap->jenis_kb=='MOW'){
+							$check= ['', '', '', 'checked', '', ''];
+						} elseif($rekap->jenis_kb=='Implan'){
+							$check= ['', '', '', '', 'checked', ''];
+						} else{
+							$check= ['', '', '', '', '', 'checked'];
+							$display1 = '';
+						}
+					}
+				?>
+				<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+					<label> <input type="radio" {!! $check[0] !!} name="jenis_kb" value="Suntik" checked> Suntik</label>
+					<label> <input type="radio" {!! $check[1] !!} name="jenis_kb" value="Pil"> Pil</label>
+					<label> <input type="radio" {!! $check[2] !!} name="jenis_kb" value="IUD"> IUD</label>
+					<label> <input type="radio" {!! $check[3] !!} name="jenis_kb" value="MOW"> MOW</label>
+					<label> <input type="radio" {!! $check[4] !!} name="jenis_kb" value="Implan"> Implan</label>
+					<label> <input type="radio" {!! $check[5] !!} name="jenis_kb" value="Lain-lain"> Lain-lain</label>
+					<span id="kb_lain" style="{!! $display1 !!}"><label><input type="text" value="" name="kb_lain"></label></span>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+		</div>
+		<div class="clearfix" style="margin-bottom: 10px;"></div>
+		<div class="col-lg-12 col-md-12" style="">
+			<div class="col-lg-4 col-md-4" style="padding: 0px">
+				<div class="col-lg-12 col-md-12" style="border:1px solid #ccc;box-shadow: 0px 5px 5px #ccc;">
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<h3>Tanda Vital</h3>
+					</div>
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<table class="table table-bordered">
+							<tr>
+								<td>1 Tekanan Darah</td>
+								<td>
+									<?php
+									$tekanan_darah=['0','0'];
+									if($rekap->tekanan_darah!=''){
+										$tekanan_darah = explode('/',$rekap->tekanan_darah);
+										if(count($tekanan_darah)>1){
+											$tekanan_darah = explode('/',$rekap->tekanan_darah);
+										}else{
+											$tekanan_darah=['0','0'];
+										}
+									}
+									?>
+									<input type="text" style="width:30%" onclick="this.select()" name="tekanan_darah[]" value="{!! $tekanan_darah[0] !!}">
+									/
+									<input type="text" style="width:30%" onclick="this.select()" name="tekanan_darah[]" value="{!! $tekanan_darah[1] !!}">
+									mmhg
+								</td>
+							</tr>
+							<tr>
+								<td>2 Frekuensi Nadi</td>
+								<td><input type="text" onclick="this.select()" class="form-control form1" name="frek_nadi" value="{!! $rekap->frek_nadi !!}">x/menit</td>
+							</tr>
+							<tr>
+								<td>3 Suhu</td>
+								<td><input type="text" onclick="this.select()" class="form-control form1" name="suhu" value="{!! $rekap->suhu !!}">^C</td>
+							</tr>
+							<tr>
+								<td>4 Frekuensi Nafas</td>
+								<td><input type="text" onclick="this.select()" class="form-control form1" name="frek_nafas" value="{!! $rekap->frek_nafas !!}">x/menit</td>
+							</tr>
+							<tr>
+								<td>5 Skor Nyeri</td>
+								<td><input type="text" onclick="this.select()" class="form-control form1" name="skor_nyeri" value="{!! $rekap->skor_nyeri !!}"></td>
+							</tr>
+							<tr>
+								<td>6 Skor Jatuh</td>
+								<td><input type="text" onclick="this.select()" class="form-control form1" name="skor_jatuh" value="{!! $rekap->skor_jatuh !!}"></td>
+							</tr>
+						</table>
+						<div class="clearfix" style="margin-bottom: 10px"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4">
+				<div class="col-lg-12 col-md-12" style="box-shadow: 0px 5px 5px #ccc;border: 1px solid #ccc;">
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<h3>Antropometri</h3>
+					</div>
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<table class="table table-bordered">
+							<tr>
+								<td>1 Berat Badan</td>
+								<td><input type="text" onclick="this.select()" class="form-control" name="berat_badan" value="{!! $rekap->berat_badan !!}"></td>
+							</tr>
+							<tr>
+								<td>2 Tinggi Badan</td>
+								<td><input type="text" onclick="this.select()" class="form-control" name="tinggi_badan" value="{!! $rekap->tinggi_badan !!}"></td>
+							</tr>
+							<tr>
+								<td>3 Lingkar Kepala</td>
+								<td><input type="text" onclick="this.select()" class="form-control" name="lingkar_kepala" value="{!! $rekap->lingkar_kepala !!}"></td>
+							</tr>
+							<tr>
+								<td>4 IMT <br/><i>*Khusus pediatri</i></td>
+								<td><input type="text" onclick="this.select()" class="form-control" name="imt" value="{!! $rekap->imt !!}"></td>
+							</tr>
+						</table>
+						<div class="clearfix" style="margin-bottom: 10px"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4" style="padding: 0px">
+				<div class="col-lg-12 col-md-12" style="box-shadow: 0px 5px 5px #ccc;border: 1px solid #ccc">
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<h3>Fungsional</h3>
+					</div>
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<table class="table table-bordered">
+							<tr>
+								<td>
+									<label for="alatBantu">1 Alat Bantu</label>
+								</td>
+								<td>
+									<?php
+									$check='';
+									if($rekap->alat_bantu!=''){
+										$check='checked';
+									}
+									?>
+									<input type="checkbox" {!! $check !!} id="alatBantu" name="alat_bantu" value="ada">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="prothesa">2 Prothesa</label>
+								</td>
+								<td>
+									<?php
+									$check='';
+									if($rekap->prothesa!=''){
+										$check='checked';
+									}
+									?>
+									<input type="checkbox" {!! $check !!} id="prothesa" name="prothesa" value="ada">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="cacatTubuh">3 Cacat Tubuh</label>
+								</td>
+								<td>
+									<?php
+									$check='';
+									if($rekap->cacat_tubuh!=''){
+										$check='checked';
+									}
+									?>
+									<input type="checkbox" {!! $check !!} id="cacatTubuh" name="cacat_tubuh" value="ada">
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>4 ADL</label>
+								</td>
+								<td>
+									<?php
+									$check=['checked',''];
+									if($rekap->adi=='mandiri'){
+										$check=['checked',''];
+									}else if($rekap->adi=='dibantu'){
+										$check=['','checked'];
+									}
+									?>
+									<label> <input type="radio" {!! $check[0] !!} name="adi" value="mandiri"> Mandiri</label>
+									<br/>
+									<label> <input type="radio" {!! $check[1] !!} name="adi" value="dibantu"> Dibantu</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>5 Riwayat Jatuh</label>
+								</td>
+								<td>
+									<?php
+									$check=['','checked'];
+									if($rekap->riwayat_jatuh=='+'){
+										$check=['checked',''];
+									}else if($rekap->riwayat_jatuh=='-'){
+										$check=['','checked'];
+									}
+									?>
+									<label> <input type="radio" {!! $check[0] !!} name="riwayat_jatuh" value="+"> +</label>
+									<label style="margin-left: 20px"> <input type="radio" {!! $check[1] !!} name="riwayat_jatuh" value="-"> -</label>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label>6 Skrining Nyeri</label>
+								</td>
+								<td>
+									<?php
+									$check=['',''];
+									$display = 'display: none';
+									if($rekap->skrining_nyeri=='Tidak' || $rekap->skrining_nyeri==''){
+										$check=['','checked'];
+									}else{
+										$display = '';
+										$check=['checked',''];
+									}
+									?>
+									<div class="col-lg-12 col-md-12" style="padding: 0px">
+										<div class="col-lg-4 col-md-4" style="padding: 0px">
+											<label> <input type="radio" {!! $check[0] !!} id="adaSkriningNyeri" name="skrining_nyeri" value="Ada"> Ada</label>
+										</div>
+										<div class="col-lg-8 col-md-8">
+											<input type="text" name="skrining_nyeri_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $rekap->skrining_nyeri !!}">
+										</div>
+									</div>
+									<br/>
+									<label> <input type="radio" {!! $check[1] !!} name="skrining_nyeri" value="Tidak"> Tidak</label>
+								</td>
+							</tr>
+						</table>
+						<div class="clearfix" style="margin-bottom: 10px"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FORM BAWAH -->
+		<div class="clearfix" style="margin-bottom: 20px"></div>
+		<div class="col-lg-12 col-md-12" style="box-shadow: 0px 10px 10px #ddd;border:1px solid #ccc;background: #fafafa">
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Status Psikologi</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$check=['','','',''];
+					if($rekap->status_psikologi!=''){
+						$st = explode("+", $rekap->status_psikologi);
+						for ($i=0; $i < count($st)-1; $i++) {
+							if($st[$i]=='Depresi'){
+								$check[0] = 'checked';
+							}
+							if($st[$i]=='Takut'){
+								$check[1] = 'checked';
+							}
+							if($st[$i]=='Agresif'){
+								$check[2] = 'checked';
+							}
+							if($st[$i]=='Melukai diri sendiri/ Orang lain'){
+								$check[3] = 'checked';
+							}
+						}
+					}
+					?>
+					<label> <input type="checkbox" {!! $check[0] !!} name="status_psikologi[]" value="Depresi"> Depresi</label>
+					<label style="margin-left: 20px"> <input type="checkbox" {!! $check[1] !!} name="status_psikologi[]" value="Takut"> Takut</label>
+					<label style="margin-left: 20px"> <input type="checkbox" {!! $check[2] !!} name="status_psikologi[]" value="Agresif"> Agresif</label>
+					<label style="margin-left: 20px"> <input type="checkbox" {!! $check[3] !!} name="status_psikologi[]" value="Melukai diri sendiri/ Orang lain"> Melukai diri sendiri/ Orang lain</label>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Hambatan edukasi</label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$check=['',''];
+					$bahasaval = '';
+					$display = 'display: none';
+					if($rekap->hambatan!=''){
+						$st = explode("+", $rekap->hambatan);
+						for ($i=0; $i < count($st)-1; $i++) {
+							if($st[$i]=='Cacat/ Fisik/ Kognitif (Gangguan Penglihatan/ Pendengaran/ Lain)'){
+								$check[1] = 'checked';
+							}else{
+								$check[0] = 'checked';
+								$display = '';
+								$bahasaval = $st[$i];
+							}
+						}
+					}
+					?>
+					<div class="col-lg-12 col-md-12" style="padding: 0px">
+						<div class="col-lg-4 col-md-4" style="padding: 0px">
+							<label> <input type="checkbox" {!! $check[0] !!} id="hambatanBahasa" name="hambatan[]" value="Bahasa"> Bahasa</label>
+						</div>
+						<div class="col-lg-8 col-md-8">
+							<input type="text" name="bahasa_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $bahasaval !!}">
+						</div>
+					</div>
+					<br/><label> <input type="checkbox" {!! $check[1] !!} name="hambatan[]" value="Cacat/ Fisik/ Kognitif (Gangguan Penglihatan/ Pendengaran/ Lain)"> Cacat/ Fisik/ Kognitif (Gangguan Penglihatan/ Pendengaran/ Lain)</label>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Agama/ Nilai Kepercayaan <b style="color:red">*</b></label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$select = ['','','','','','',''];
+					if($rekap->agama!='' || $rekap->agama!=null){
+						switch ($rekap->agama) {
+							case 'Islam':
+							$select[0] = 'selected';
+							break;
+							case 'Kristen':
+							$select[1] = 'selected';
+							break;
+							case 'Katolik':
+							$select[2] = 'selected';
+							break;
+							case 'Hindu':
+							$select[3] = 'selected';
+							break;
+							case 'Buddha':
+							$select[4] = 'selected';
+							break;
+							case 'Kong Hu Cu':
+							$select[5] = 'selected';
+							break;
+							case 'Lainnya':
+							$select[6] = 'selected';
+							break;
+
+							default:
+							# code...
+							break;
+						}
+					}
+					?>
+					<select name="agama" class="form-control">
+						<option value="">..:: Pilih Agama ::..</option>
+						<option {{$select[0]}} value="Islam">Islam</option>
+						<option {{$select[1]}} value="Kristen">Kristen</option>
+						<option {{$select[2]}} value="Katolik">Katolik</option>
+						<option {{$select[3]}} value="Hindu">Hindu</option>
+						<option {{$select[4]}} value="Buddha">Buddha</option>
+						<option {{$select[5]}} value="Kong Hu Cu">Kong Hu Cu</option>
+						<option {{$select[6]}} value="Lainnya">Lainnya</option>
+					</select>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pendidikan <b style="color: red">(*)</b></label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<?php
+					$select = ['','','','','','','',''];
+					if($rekap->pendidikan!='' || $rekap->pendidikan!=null){
+						switch ($rekap->pendidikan) {
+							case 'SD Se-derajat':
+							$select[0] = 'selected';
+							break;
+							case 'SMP Se-derajat':
+							$select[1] = 'selected';
+							break;
+							case 'SMA Se-derajat':
+							$select[2] = 'selected';
+							break;
+							case 'DIII (Diploma)':
+							$select[3] = 'selected';
+							break;
+							case 'S1 (Sarjana)':
+							$select[4] = 'selected';
+							break;
+							case 'S2 (Master)':
+							$select[5] = 'selected';
+							break;
+							case 'S3 (Doktoral)':
+							$select[6] = 'selected';
+							break;
+							case 'Lainnya':
+							$select[7] = 'selected';
+							break;
+
+							default:
+							# code...
+							break;
+						}
+					}
+					?>
+					<select name="pendidikan" class="form-control">
+						<option value="">..:: Pilih Pendidikan ::..</option>
+						<option {{$select[0]}} value="SD Se-derajat">SD Se-derajat</option>
+						<option {{$select[1]}} value="SMP Se-derajat">SMP Se-derajat</option>
+						<option {{$select[2]}} value="SMA Se-derajat">SMA Se-derajat</option>
+						<option {{$select[3]}} value="DIII (Diploma)">DIII (Diploma)</option>
+						<option {{$select[4]}} value="S1 (Sarjana)">S1 (Sarjana)</option>
+						<option {{$select[5]}} value="S2 (Master)">S2 (Master)</option>
+						<option {{$select[6]}} value="S3 (Doktoral)">S3 (Doktoral)</option>
+						<option {{$select[7]}} value="Lainnya">Lainnya</option>
+					</select>
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pekerjaan <b style="color: red">(*)</b></label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<input type="text" name="pekerjaan" class="form-control" value="{!! $rekap->pekerjaan !!}">
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+			<!-- <div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Alergi <b style="color: red">(*)</b></label>
+				<div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+					<input type="text" name="alergi" class="form-control" value="{!! $rekap->alergi !!}">
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div> -->
+			<div class="form-group">
+				<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Discharge Planning <b style="color: red">(*)</b></label>
+				<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+					<input type="text" name="discharge" class="form-control" value="{!! $rekap->discharge !!}">
+				</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4">
+					Hari
+				</div>
+			</div>
+			<div class="clearfix" style="margin-bottom: 10px"></div>
+		</div>
+
+		<div class="clearfix" style="margin-bottom: 10px"></div>
+		<div class="col-lg-12 col-md-12" style="text-align: center;">
+			<a href="#" class="btn btn-success" onclick="simpantahap3()">Simpan</a>
+		</div>
+		<div class="clearfix" style="margin-bottom: 10px"></div>
+	</form>
+</div>
+<div class="clearfix"></div>
+
+@section('js_tahap3')
+<script type="text/javascript">
+	jQuery(function($){
+		$("input[name=tekanan_darah]").mask("9?99/9?99");
+		$("input[name=frek_nadi]").mask("9?99");
+		$("input[name=suhu]").mask("9?99");
+		$("input[name=frek_nafas]").mask("9?99");
+		$("input[name=skor_nyeri]").mask("9?99");
+		$("input[name=skor_jatuh]").mask("9?99");
+		$("input[name=skor_jatuh]").mask("9?99");
+		$("input[name=berat_badan]").mask("9?99");
+		$("input[name=tinggi_badan]").mask("9?99");
+		$("input[name=lingkar_kepala]").mask("9?99");
+		$("input[name=imt]").mask("9?99");
+		$("input[name=discharge]").mask("9?99");
+	});
+
+	$('input[name=skrining_nyeri]').change(function(){
+		var skrining_nyeri = $('input[name=skrining_nyeri]:checked').val();
+		if(skrining_nyeri=='Ada'){
+			$('input[name=skrining_nyeri_lain]').show();
+			$('input[name=skrining_nyeri_lain]').attr('required','required');
+		}else{
+			$('input[name=skrining_nyeri_lain]').hide();
+			$('input[name=skrining_nyeri_lain]').removeAttr('required');
+		}
+	});
+
+	$('input[name=kategori_pembayaran]').change(function(){
+		var kategori_pembayaran = $('input[name=kategori_pembayaran]:checked').val();
+		if(kategori_pembayaran=='Lainnye'){
+			$('input[name=kategori_lainnya]').show();
+			$('input[name=kategori_lainnya]').attr('required','required');
+		}else{
+			$('input[name=kategori_lainnya]').hide();
+			$('input[name=kategori_lainnya]').removeAttr('required');
+		}
+	});
+
+	$('input[name=riwayat_kesehatan]').change(function(){
+		var riwayat_kesehatan = $('input[name=riwayat_kesehatan]:checked').val();
+		if(riwayat_kesehatan=='Y'){
+			$('#dengan_sakit').show();
+			$('input[name=sakit_opname]').attr('required','required');
+		}else{
+			$('#dengan_sakit').hide();
+			$('input[name=sakit_opname]').removeAttr('required');
+		}
+	});
+
+	$('input[name=riwayat_operasi]').change(function(){
+		var riwayat_operasi = $('input[name=riwayat_operasi]:checked').val();
+		if(riwayat_operasi=='Y'){
+			$('#operasi_hari_ke').show();
+			$('input[name=operasi_hari_ke]').attr('required','required');
+		}else{
+			$('#operasi_hari_ke').hide();
+			$('input[name=operasi_hari_ke]').removeAttr('required');
+		}
+	});
+
+	$('input[name=riwayat_kb]').change(function(){
+		var riwayat_kb = $('input[name=riwayat_kb]:checked').val();
+		if(riwayat_kb=='Y'){
+			$('.kbY').show();
+			$('input[name=operasi_hari_ke]').attr('required','required');
+		}else{
+			$('.kbY').hide();
+			$('input[name=operasi_hari_ke]').removeAttr('required');
+		}
+	});
+
+	$('input[name=jenis_kb]').change(function(){
+		var jenis_kb = $('input[name=jenis_kb]:checked').val();
+		if(jenis_kb=='Lain-lain'){
+			$('#kb_lain').show();
+			$('input[name=kb_lain]').attr('required','required');
+		}else{
+			$('#kb_lain').hide();
+			$('input[name=kb_lain]').removeAttr('required');
+		}
+	});
+
+	window.onload = function(){
+		$('input[name=skrining_nyeri]').change(function(){
+			var skrining_nyeri = $('input[name=skrining_nyeri]:checked').val();
+			if(skrining_nyeri=='Ada'){
+				$('input[name=skrining_nyeri_lain]').show();
+				$('input[name=skrining_nyeri_lain]').attr('required','required');
+			}else{
+				$('input[name=skrining_nyeri_lain]').hide();
+				$('input[name=skrining_nyeri_lain]').removeAttr('required');
+			}
+		});
+	}
+
+	function simpantahap3(){
+		var i = 0;
+
+		if($('input[name=bahasa_lain]').is(':visible')){
+			var bahasa_lain = $('input[name=bahasa_lain]').val();
+			if(bahasa_lain==''){
+				swal('Hambatan bahasa harus diisi');
+				i++;
+			}
+		}
+
+		var skrining_nyeri = $('input[name=skrining_nyeri]:checked').val();
+		if(skrining_nyeri=='Ada'){
+			var lain_nyeri = $('input[name=skrining_nyeri_lain]').val();
+			if (lain_nyeri=='') {
+				swal('Keterangan skrining nyeri harus diisi');
+				i++;
+			}
+		}
+
+		var perawat = $('#NamaPerawatPakai').val();
+		var tekanan_darah = $('input[name=tekanan_darah]').val();
+		var frek_nadi = $('input[name=frek_nadi]').val();
+		var suhu = $('input[name=suhu]').val();
+		var frek_nafas = $('input[name=frek_nafas]').val();
+		var skor_nyeri = $('input[name=skor_nyeri]').val();
+		var skor_jatuh = $('input[name=skor_jatuh]').val();
+		var berat_badan = $('input[name=berat_badan]').val();
+		var tinggi_badan = $('input[name=tinggi_badan]').val();
+		var lingkar_kepala = $('input[name=lingkar_kepala]').val();
+		var imt = $('input[name=imt]').val();
+		var agama = $('select[name=agama]').val();
+		var pendidikan = $('input[name=pendidikan]').val();
+		var pekerjaan = $('input[name=pekerjaan]').val();
+
+		if(pekerjaan==''){
+			swal('Pekerjaan harus diisi');
+			i++;
+		}
+
+		if(pendidikan==''){
+			swal('Pendidikan harus diisi');
+			i++;
+		}
+
+		if(agama==''){
+			swal('Agama harus diisi');
+			i++;
+		}
+
+		if(isNaN(imt)){
+			swal('IMT berupa angka');
+			i++;
+		}
+
+		if(lingkar_kepala==''){
+			swal('Lingkar kepala harus diisi');
+			i++;
+		}else{
+			if(isNaN(lingkar_kepala)){
+				swal('Lingkar kepala berupa angka');
+				i++;
+			}
+		}
+
+		if(tinggi_badan==''){
+			swal('Tinggi badan harus diisi');
+			i++;
+		}else{
+			if(isNaN(tinggi_badan)){
+				swal('Tinggi badan berupa angka');
+				i++;
+			}
+		}
+
+		if(berat_badan==''){
+			swal('Berat badan harus diisi');
+			i++;
+		}else{
+			if(isNaN(berat_badan)){
+				swal('Berat badan berupa angka');
+				i++;
+			}
+		}
+
+		if(skor_jatuh==''){
+			swal('Skor jatuh harus diisi');
+			i++;
+		}else{
+			if(isNaN(skor_jatuh)){
+				swal('Skor jatuh berupa angka');
+				i++;
+			}
+		}
+
+		if(skor_nyeri==''){
+			swal('Skor nyeri harus diisi');
+			i++;
+		}else{
+			if(isNaN(skor_nyeri)){
+				swal('Skor nyeri berupa angka');
+				i++;
+			}
+		}
+
+		if(frek_nafas==''){
+			swal('Frekuensi nafas harus diisi');
+			i++;
+		}else{
+			if(isNaN(frek_nafas)){
+				swal('Frekuensi nafas berupa angka');
+				i++;
+			}
+		}
+
+		if(suhu==''){
+			swal('Suhu harus diisi');
+			i++;
+		}else{
+			if(isNaN(suhu)){
+				swal('Suhu berupa angka');
+				i++;
+			}
+		}
+
+		if(frek_nadi==''){
+			swal('Frekuensi nadi harus diisi');
+			i++;
+		}else{
+			if(isNaN(frek_nadi)){
+				swal('Frekuensi nadi berupa angka');
+				i++;
+			}
+		}
+
+		if(tekanan_darah==''){
+			swal('Tekanan darah harus diisi');
+			i++;
+		}else{
+
+		}
+
+		if(perawat=='' || perawat==null){
+			swal('Nama perawat tidak oleh kosong');
+			i++;
+		}
+
+		if(i==0){
+			var data = $('form#tahap3').serialize();
+			$.post("{!! route('simpanTahap3') !!}",data,function(data){
+				if(data.status=='success'){
+					// swal("Success !",'Data berhasil ditambahkan','success');
+					// $(".tahap3").load(location.href + " .tahap3>*", "");
+					window.location="{{route('content3')}}";
+				}else{
+					swal("Whoops !",'Tidak ada perubahan','warning');
+				}
+			});
+		}
+
+	}
+
+	$('#inputNamaPerawat').val("{!! $rekap->nama_perawat !!}")
+
+	// $('input[name=bahasa_lain]').hide();
+	$('#hambatanBahasa').change(function(){
+		if($('input[name=bahasa_lain]').is(':visible')){
+			$('input[name=bahasa_lain]').hide();
+			$('input[name=bahasa_lain]').removeAttr('required');
+		}else{
+			$('input[name=bahasa_lain]').show();
+			$('input[name=bahasa_lain]').attr('required','required');
+		}
+	});
+	function upload(id){
+		window.open("{!! url('rekap_medik/p5/') !!}/"+id);
+	}
+	function camera(id){
+		window.open("{!! url('rekap_medik/p3/') !!}/"+id);
+	}
+	function edit(id){
+		window.open("{!! url('rekap_medik/p1/') !!}/"+id);
+	}
+</script>
+@stop

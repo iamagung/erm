@@ -1,0 +1,1 @@
+<h1><a href="http://192.168.1.234/rmnew/public/dwv/viewers/static/index.php?id={{$image}}" target="_blank">Konyol {{$image}}</a></h1>

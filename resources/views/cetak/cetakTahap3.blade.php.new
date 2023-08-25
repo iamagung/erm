@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Tahap 1</title>
+	<style type="text/css">
+		#body td {
+			text-align: center;
+		}
+
+		.d-flex {
+			display: flex;
+		}
+	</style>
+</head>
+
+<body>
+	<?php
+		if($customer->JenisKel=='P'){
+			$kelamin = 'Perempuan';
+		}else{
+			$kelamin = 'Laki-laki';
+		}
+		$syarat2 = DB::table('rekam_medis_lanjutan')->where('rekam_medis_id',$syarat->id_rekapMedik)->first();
+	?>
+	<table id="kop" width="100%" border="1">
+		<tr>
+			<td rowspan="2" width="8%">
+				<img src="{!! asset($iden->favicon) !!}" style="width: 2cm">
+			</td>
+			<td width="72%" style="font-size: 20px;font-weight: bold;text-align: center;">
+				PENGKAJIAN AWAL PASIEN RAWAT JALAN
+			</td>
+			<td width="20%" rowspan="2" style="vertical-align: bottom; text-align: right;">
+				<span>Label</span>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Poliklinik: {{$syarat->NamaPoli}}
+			</td>
+		</tr>
+	</table>
+
+	<table width="100%" border="1">
+		<tr>
+			<td>
+				<ul>
+					<li style="list-style-type: upper-roman">
+						<h4>Pengkajian Keperawatan</h3>
+							<p style="margin-top: -10px">Tiba di Poliklinik:</p>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Tanggal: {{date('d-m-Y', strtotime($syarat->tanggalKunjungan))}}</p>
+						</div>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Pendaftaran melalui</p>
+							<p style="margin-left: 15px">:</p>
+							<p><input type="checkbox" {{($syarat2->daftar_melalui == 'On')?'checked':''}} disabled> Online</p>
+							<p style="margin-left: 20px;"><input type="checkbox" {{($syarat2->daftar_melalui == 'Off')?'checked':''}} disabled> Offline</p>
+						</div>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Kategori Pembayaran :</p>
+							<p>
+								<input type="checkbox" {{($syarat2->kategori_pembayaran == 'On')?'checked':''}} disabled> Umum
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" {{($syarat2->kategori_pembayaran == 'BPJS')?'checked':''}} disabled> BPJS
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" {{($syarat2->kategori_pembayaran != 'UMUM' && $syarat2->kategori_pembayaran != 'BPJS')?'checked':''}} disabled> Asuransi Lainnya, {{($syarat2->kategori_pembayaran != 'UMUM' || $syarat2->kategori_pembayaran == 'BPJS')?$syarat2->kategori_pembayaran:''}}
+							</p>
+						</div>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Keluhan Utama</p>
+							<p style="margin-left: 45px">: </p>
+							<p>&nbsp;{{$syarat2->keluhan_utama}}</p>
+						</div>
+					</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<table width="100%" border="1">
+		<tr>
+			<td>
+				<ul>
+					<li style="list-style-type: inherit">
+						<div class="d-flex">
+							<p>Riwayat Kesehatan :</p>
+							<p>
+								<input type="checkbox" {{($syarat2->riwayat_kesehatan == 'N')?'checked':''}} disabled> Tidak Pernah Opname
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" {{($syarat2->riwayat_kesehatan == 'N')?'':'checked'}} disabled> Pernah Opname, dengan sakit: {{($syarat2->riwayat_kesehatan == 'N')?'':$syarat2->riwayat_kesehatan}}
+							</p>
+						</div>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Riwayat Operasi</p>
+							<p style="margin-left: 20px">:</p>
+							<p>
+								<input type="checkbox" {{($syarat2->riwayat_operasi == 'N')?'checked':''}} disabled> Tidak
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" {{($syarat2->riwayat_operasi == 'N')?'':'checked'}} disabled> Ya, Pasca Operasi hari ke {{($syarat2->riwayat_operasi == 'N')?'':$syarat2->riwayat_operasi}}
+							</p>
+						</div>
+					</li>
+					<li style="list-style-type: inherit">
+						<div class="d-flex" style="margin-top: -20px">
+							<p>Riwayat KB </p>
+							<P style="margin-left: 50px">:</P>
+							<p>
+								<input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'checked':''}}> Tidak
+							</p>
+							<p style="margin-left: 20px;"><input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':'checked'}}> Ya</p>
+							<p style="margin-left: 50px;">Jenis <input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':(($syarat2->jenis_kb == 'Suntik')?'checked':'')}}> Suntik</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':(($syarat2->jenis_kb == 'Pil')?'checked':'')}}> Pil
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':(($syarat2->jenis_kb == 'IUD')?'checked':'')}}> IUD
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':(($syarat2->jenis_kb == 'MOW')?'checked':'')}}> MOW
+							</p>
+							<p style="margin-left: 20px;">
+								<input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':(($syarat2->jenis_kb == 'Implan')?'checked':'')}}> Implan
+							</p>
+							<p style="margin-left: 20px;"> <input type="checkbox" disabled {{($syarat2->riwayat_kb == 'N')?'':((!in_array($syarat2->jenis_kb, ['Suntik', 'Pil', 'IUD', 'MOW', 'Implan']))?'checked':'')}}> Lain-lain, {{($syarat2->riwayat_kb == 'N')?'':((!in_array($syarat2->jenis_kb, ['Suntik', 'Pil', 'IUD', 'MOW', 'Implan']))?$syarat2->jenis_kb:'')}}</p>
+							<p style="margin-left: 50px;">Lama Pemakaian: {{($syarat2->riwayat_kb == 'N')?'':$syarat2->riwayat_kb}}</p>
+						</div>
+					</li>
+
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<table width="100%" border="1">
+		<tr>
+			<th>Status Fisik</th>
+			<th>Antropometri</th>
+			<th>Fungsional</th>
+		</tr>
+		<tr>
+			<td>
+				<ul style="list-style-type: decimal">
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Tekanan Darah :</p>
+							<p style="margin-left: 10px;"> {{$syarat->tekanan_darah}} mmHg</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Frekuensi Nadi :</p>
+							<p style="margin-left: 10px;"> {{$syarat->frek_nadi}} x/menit</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Suhu</p>
+							<p style="margin-left: 70px">:</p>
+							<p style="margin-left: 10px;">{{$syarat->suhu}} &#8451</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Frekuensi Nafas : {{$syarat->frek_nafas}} x/menit</p>
+						</div>
+					</li>
+				</ul>
+			</td>
+
+			<td>
+				<ul style="list-style-type: decimal">
+					<li>
+						<div class="d-flex">
+							<p>Berat Badan</p>
+							<P style="margin-left: 32px">:</P>
+							<p style="margin-left: 10px;">{{$syarat->berat_badan}} kg</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Tinggi Badan</p>
+							<P style="margin-left: 25px">:</P>
+							<p style="margin-left: 10px;">{{$syarat->tinggi_badan}} cm</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Lingkar Kepala* :</p>
+							<p style="margin-left: 10px;"> {{$syarat->lingkar_kepala}} cm</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>IMT</p>
+							<p style="margin-left: 82px">:</p>
+							<p style="margin-left: 10px">{{$syarat->imt}} </p>
+						</div>
+					</li>
+					<p style="margin-top: -5px">*Khusus Pediatri</p>
+				</ul>
+			</td>
+			<td>
+				<ul style="list-style-type: decimal">
+					<li>
+						<div class="d-flex">
+							<p>Alat Bantu</p>
+							<p style="margin-left: 15px">:</p>
+							<p>
+								<input type="checkbox" disabled {{($syarat->alat_bantu == 'ada')?'checked':''}}> Ya
+							</p>
+							<p>
+								<input type="checkbox" style="margin-left: 20px" disabled {{($syarat->alat_bantu != 'ada')?'checked':''}}> Tidak
+							</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Prothesa</p>
+							<p style="margin-left: 30px">:</p>
+							<p>
+								<input type="checkbox" disabled {{($syarat->prothesa == 'ada')?'checked':''}}> Ya
+							</p>
+							<p>
+								<input type="checkbox" disabled style="margin-left: 20px" {{($syarat->prothesa != 'ada')?'checked':''}}> Tidak
+							</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Cacat Tubuh :</p>
+							<p><input type="checkbox" disabled {{($syarat->cacat_tubuh == 'ada')?'checked':''}}> Ya</p>
+							<p><input type="checkbox" disabled style="margin-left: 20px" {{($syarat->cacat_tubuh != 'ada')?'checked':''}}> Tidak</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>ADL</p>
+							<P style="margin-left: 52px">:</P>
+							<p><input type="checkbox" disabled {{($syarat->adi == 'mandiri')?'checked':''}}> Mandiri</p>
+							<p><input type="checkbox" disabled style="margin-left: 20px" {{($syarat->adi == 'dibantu')?'checked':''}}> Dibantu</p>
+						</div>
+					</li>
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+	<table width="100%" border="1">
+		<tr>
+			<td>
+				<ul style="list-style-type: inherit">
+					<li>
+						<div class="d-flex">
+							<p>Status Gizi</p>
+							<p style="margin-left: 55px">:</p>
+							<p><input type="checkbox" disabled {{($syarat2->status_gizi == 'Buruk')?'checked':''}}> Buruk</p>
+							<p><input type="checkbox" disabled {{($syarat2->status_gizi == 'Kurang')?'checked':''}} style="margin-left: 20px"> Kurang</p>
+							<p><input type="checkbox" disabled {{($syarat2->status_gizi == 'Baik')?'checked':''}} style="margin-left: 20px"> Baik</p>
+							<p><input type="checkbox" disabled {{($syarat2->status_gizi == 'Lebih')?'checked':''}} style="margin-left: 20px"> Lebih</p>
+							<p><input type="checkbox" disabled {{($syarat2->status_gizi == 'Obesitas')?'checked':''}} style="margin-left: 20px"> Obesitas</p>
+							<p><input type="checkbox" disabled {{(explode('+',$syarat2->stunting_wasting)[0] == 'Y')?'checked':''}} style="margin-left: 20px">Stunting</p>
+							<p><input type="checkbox" disabled {{(explode('+',$syarat2->stunting_wasting)[1] == 'Y')?'checked':''}} style="margin-left: 20px">Wasting</p>
+						</div>
+					</li>
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<?php
+								$check=['',''];
+								$bahasaval = '';
+								$display = 'display: none';
+								if($syarat->hambatan!=''){
+									$st = explode("+", $syarat->hambatan);
+									for ($i=0; $i < count($st)-1; $i++) {
+										if($st[$i]=='Cacat/ Fisik/ Kognitif (Gangguan Penglihatan/ Pendengaran/ Lain)'){
+											$check[1] = 'checked';
+										}else{
+											$check[0] = 'checked';
+											$display = '';
+											$bahasaval = $st[$i];
+										}
+									}
+								}
+							?>
+							<p>Hambatan Edukasi :</p>
+							<p><input type="checkbox" disabled {{$check[0]}}> Bahasa, {{$bahasaval}}</p>
+							<p><input type="checkbox" disabled {{$check[1]}} style="margin-left: 80px"> Cacat/Fisik/Kognitif/(Gangguan
+								Penglihatan / Pendengaran / Lainnya **)</p>
+						</div>
+					</li>
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Pekerjaan</p>
+							<p style="margin-left: 65px">: {{$syarat->pekerjaan}}</p>
+							<!-- <p><input type="checkbox"> PNS / TNI / POLRI</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Swasta</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Pensiun</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Lain-lain:</p> -->
+						</div>
+					</li>
+
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Pendidikan</p>
+							<p style="margin-left: 55px">: {{$syarat->pendidikan}}</p>
+							<!-- <p><input type="checkbox"> SD</p>
+							<p><input type="checkbox" style="margin-left: 20px"> SMP</p>
+							<p><input type="checkbox" style="margin-left: 20px"> SMA</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Akademi/PT</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Pasca Sarjana</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Lain-lain :</p> -->
+						</div>
+					</li>
+
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Spriritual (Agama) : {{$syarat->agama}}</p>
+							<!-- <p><input type="checkbox"> Islam</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Protestan</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Katholik</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Hindu</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Budha</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Khonghucu</p>
+							<p><input type="checkbox" style="margin-left: 20px"> Lain-lain :</p> -->
+						</div>
+					</li>
+
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Suku / Budaya</p>
+							<p style="margin-left: 32px">: {{$syarat2->suku}}</p>
+						</div>
+					</li>
+
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Nilai-nilai kepercayaan :</p>
+							<p><input type="checkbox" disabled {{($syarat->anutan == '')?'checked':''}}> Tidak Ada</p>
+							<p><input type="checkbox" disabled {{($syarat->anutan != '')?'checked':''}} style="margin-left: 20px"> Ada, {{($syarat->anutan != '')?$syarat->anutan:''}}</p>
+						</div>
+					</li>
+
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Status Psikologis</p>
+							<?php
+								$check=['','','','','','','',''];
+								$lain = '';
+								if($syarat->status_psikologi!=''){
+									$st = explode("+", $syarat->status_psikologi);
+									for ($i=0; $i < count($st)-1; $i++) {
+										if($st[$i]=='Tenang'){
+											$check[0] = 'checked';
+										}elseif($st[$i]=='Cemas'){
+											$check[1] = 'checked';
+										}elseif($st[$i]=='Sedih'){
+											$check[2] = 'checked';
+										}elseif($st[$i]=='Depresi'){
+											$check[3] = 'checked';
+										}elseif($st[$i]=='Marah'){
+											$check[4] = 'checked';
+										}elseif($st[$i]=='Hiperaktif'){
+											$check[5] = 'checked';
+										}elseif($st[$i]=='Mengganggu Sekitar'){
+											$check[6] = 'checked';
+										}else{
+											$check[7] = 'checked';
+											$lain = $st[$i];
+										}
+									}
+								}
+								?>
+							<p style="margin-left: 15px">:</p>
+							<p><input type="checkbox" disabled {{$check[0]}}> Tenang</p>
+							<p><input type="checkbox" disabled {{$check[1]}} style="margin-left: 20px"> Cemas</p>
+							<p><input type="checkbox" disabled {{$check[2]}} style="margin-left: 20px"> Sedih</p>
+							<p><input type="checkbox" disabled {{$check[3]}} style="margin-left: 20px"> Depresi</p>
+							<p><input type="checkbox" disabled {{$check[4]}} style="margin-left: 20px"> Marah</p>
+							<p><input type="checkbox" disabled {{$check[5]}} style="margin-left: 20px"> Hiperaktif</p>
+							<p><input type="checkbox" disabled {{$check[6]}} style="margin-left: 20px"> Menggangu sekitar</p>
+							<p><input type="checkbox" disabled {{$check[7]}} style="margin-left: 20px"> Lain-lain : {{$lain}}</p>
+						</div>
+					</li>
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<?php
+								$check = ['','',''];
+								if (isset($syarat2->status_pernikahan)) {
+									if($syarat2->status_pernikahan=='Menikah'){
+										$check= ['checked','',''];
+									} elseif($syarat2->status_pernikahan=='Belum'){
+										$check= ['','checked',''];
+									} elseif($syarat2->status_pernikahan=='Janda/Duda'){
+										$check= ['','','checked'];
+									}
+								}
+							?>
+							<p>Status Pernikahan</p>
+							<p style="margin-left: 10px">:</p>
+							<p><input type="checkbox" disabled {{$check[0]}}> Menikah</p>
+							<p><input type="checkbox" disabled {{$check[1]}} style="margin-left: 20px"> Belum</p>
+							<p><input type="checkbox" disabled {{$check[2]}} style="margin-left: 20px"> Janda/Duda</p>
+						</div>
+					</li>
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Alergi</p>
+							<p style="margin-left: 85px">:</p>
+							<p><input type="checkbox" disabled {{($syarat->alergi == '')?'checked':''}}> Tidak</p>
+							<p><input type="checkbox" disabled {{($syarat->alergi != '')?'checked':''}} style="margin-left: 20px"> Ya, {{($syarat->alergi != '')?$syarat->alergi:'sebutkan'}}</p>
+						</div>
+					</li>
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Riwayat Pengobatan :</p>
+							<p><input type="checkbox" disabled {{($syarat2->riwayat_pengobatan == '')?'checked':''}}> Tidak Ada</p>
+							<p><input type="checkbox" disabled {{($syarat2->riwayat_pengobatan != '')?'checked':''}} style="margin-left: 20px"> Ada, {{($syarat2->riwayat_pengobatan != '')?$syarat2->riwayat_pengobatan:'sebutkan'}}</p>
+						</div>
+					</li>
+
+					<li style="margin-top: -20px">
+						<div class="d-flex">
+							<p>Pengkajian Nyeri</p>
+							<p style="margin-left: 22px">:</p>
+							<p><input type="checkbox" disabled {{($syarat2->pengkajian_nyeri == '0')?'checked':''}}> Tidak Ada Nyeri ( 0 )</p>
+							<p><input type="checkbox" disabled {{($syarat2->pengkajian_nyeri == '1-3')?'checked':''}} style="margin-left: 20px"> Nyeri Ringan ( 1-3 )</p>
+							<p><input type="checkbox" disabled {{($syarat2->pengkajian_nyeri == '4-6')?'checked':''}} style="margin-left: 20px"> Nyeri Sedang ( 4-6 )</p>
+							<p><input type="checkbox" disabled {{($syarat2->pengkajian_nyeri == '7-10')?'checked':''}} style="margin-left: 20px"> Nyeri Berat ( 7-10 )</p>
+						</div>
+					</li>
+
+					<li style="list-style-type: inherit; margin-top: -20px">
+						<?php
+							$check1=['',''];
+							$check2=['',''];
+							$check3=['','',''];
+							if ((isset($syarat2->risiko_jatuh))) {
+								if($syarat2->risiko_jatuh!=''){
+									$rsk = explode("+", $syarat2->risiko_jatuh);
+									if($rsk[0]=='Y'){
+										$check1[0] = 'checked';
+									}else{
+										$check1[1] = 'checked';
+									}
+
+									if($rsk[1]=='Y'){
+										$check2[0] = 'checked';
+									}else{
+										$check2[1] = 'checked';
+									}
+
+									if($rsk[2]=='Tidak'){
+										$check3[0] = 'checked';
+									}elseif($rsk[2]=='Sedang'){
+										$check3[1] = 'checked';
+									}else{
+										$check3[2] = 'checked';
+									}
+								}
+							}
+						?>
+						<p>Pengkajian Resiko Jatuh Time Up & Go Test (TUG) :</p>
+						<p style="margin-left: 50px">a. Cara berjalan pasien saat akan duduk dikursi, Apakah pasien tampak tak seimbang(sempoyongan/limbung)?</p>
+						<div class="d-flex" style="margin-top:-20px; margin-left: 100px;">
+							<p><input type="checkbox" disabled {{$check1[0]}}> Ya</p>
+							<p style="margin-left: 20px"><input type="checkbox" disabled {{$check1[1]}}> Tidak</p>
+						</div>
+						<p style="margin-left: 50px; margin-top: -10px">b. Apakah pasien memegang pinggiran kursi/meja/benda lain sebagai penopang saat duduk ?</p>
+						<div class="d-flex" style="margin-top:-20px; margin-left: 100px;">
+							<p><input type="checkbox" disabled {{$check2[0]}}> Ya</p>
+							<p style="margin-left: 20px"><input type="checkbox" disabled {{$check2[1]}}> Tidak</p>
+						</div>
+						<div class="d-flex" style="margin-top: -20px; margin-left: 50px">
+							<p>Hasil :</p>
+							<p><input type="checkbox" disabled {{$check3[0]}}> Tidak beresiko (Tidak ditemukan a dan b)</p>
+						</div>
+						<p style="margin-left: 92px; margin-top: -15px"><input type="checkbox" disabled {{$check3[1]}}> Resiko Rendah (Ditemukan salah satu a dan b)</p>
+						<p style="margin-left: 92px; margin-top: -15px"><input type="checkbox" disabled {{$check3[2]}}> Resiko Tinggi (Ditemukan a dan b)</p>
+					</li>
+
+					<div class="d-flex" style="margin-top: -20px">
+						<p>(Beri tanda (&#10004;)) pada kolom sesuai(**) coret yang tidak perlu) <i>Dishcharge planning</i> {{($syarat->discharge != '')?$syarat->discharge:'...'}} Hari</p>
+					</div>
+					
+				</ul>
+			</td>
+		</tr>
+	</table>
+
+
+	<!--slide 2-->
+		<table width="100%" border="1">
+			<tr>
+				<th colspan="2">
+					<div class="d-flex">
+						<p>II. Pengkajian Medis</p>
+					</div>
+				</th>
+			</tr>
+			<tr>
+				<td width="60%" style="text-align: left;">
+					<p><b>Anamnesis(S) dan Pemeriksaan Fisik (O) :</b></p>
+					<p>Anamnesis (S) </p>
+					<?php
+						if($syarat->foto_anamnesis!=''){
+							?>
+							<img src="{{asset($syarat->foto_anamnesis)}}" style="width: 8cm">
+							<?php
+						}
+					?>
+					<p>{{$syarat->anamnesis}}</p><br/>
+					Pemeriksaan Fisik (O)<br>
+					<?php
+						if($syarat->fotoPemeriksaanFisik!=''){
+							?>
+							<img src="{{asset($syarat->fotoPemeriksaanFisik)}}" style="width: 8cm">
+							<?php
+						}
+					?>
+					<p>{{$syarat->pemeriksaanFisik}}</p>
+				</td>
+				<td width="40%" style="text-align: left; vertical-align: top;">
+					Rencana dan Terapi(P)
+					<?php
+						// if($syarat->fotoPemeriksaanFisik!=''){
+							?>
+							<!-- <img src="{{asset($syarat->rencana_terapi)}}" style="width: 8cm"> -->
+							<?php
+						// }
+					?>
+					<p>{{$syarat->rencana_terapi}}</p>
+				</td>
+			</tr>
+		</table>
+		
+		<table width="100%" border="1">
+			<tr>
+				<td width="40%">
+					<p style="margin-top: -80px; margin-left: 20px">Diagonosis(A) :</p>
+					<?php
+						if($syarat->diagnosis_tambahan!=''){
+							?>
+							<ol>
+								<?php
+								$d = explode(";", $syarat->diagnosa);
+								$k = explode(";", $syarat->icd10);
+								for ($i=0; $i < count($d)-1; $i++) {
+									?>
+									<li>{{$d[$i]}} ({{$k[$i]}})</li>
+									<?php
+								}
+								?>
+							</ol>
+							<?php
+						}
+					?>
+				</td>
+				<td width="20%">
+					<p style="margin-top: -80px; margin-left: 20px">Kode ICD 10</p>
+					<?php
+						if($syarat->diagnosa!=''){
+							?>
+							<ol>
+								<?php
+								$d = explode(";", $syarat->diagnosa);
+								$k = explode(";", $syarat->icd10);
+								for ($i=0; $i < count($d)-1; $i++) {
+									?>
+									<li>{{$d[$i]}} ({{$k[$i]}})</li>
+									<?php
+								}
+								?>
+							</ol>
+							<?php
+						}
+					?>
+				</td>
+				<td width="40%">
+					<i style="margin-left: 20px;">Dishcharge Planning :</i>
+					<ul style="margin-top: -10px">
+						<li>
+							<div class="d-flex">
+								<p>Kontrol :</p>
+								<p><input type="checkbox" disabled {{($syarat->tgl_kontrol == '')?'':'checked'}}> Ya</p>
+								<p><input type="checkbox" disabled {{($syarat->tgl_kontrol == '')? 'checked':''}}> Tidak</p>
+							</div>
+						</li>
+						<p style="margin-top: -10px; margin-left: 200px">Tanggal : {{($syarat->tgl_kontrol == '')?'':$syarat->tgl_kontrol}}</p>
+						<li style="margin-top: -20px">
+							<div class="d-flex">
+								<?php
+				                	$rujukan = DB::table('rujukan_rm')->where('rekapMedik_id',$syarat->id_rekapMedik)->first();
+				                	$check = ($rujukan)?'Y':'N';
+				                	print_r($syarat->id_rekapMedik);
+				                ?>
+								<p>Rujuk :</p>
+								<p><input type="checkbox" disabled {{($check == 'Y')?'checked':''}}> Ya</p>
+								<p><input type="checkbox" disabled {{($check == 'N')?'checked':''}}> Tidak</p>
+							</div>
+						</li>
+						<li style="margin-top: -10px">
+							<div class="d-flex">
+								<p>Rawat Inap :</p>
+								<p><input type="checkbox" disabled {{($syarat2->is_ranap == 'Y')?'checked':''}}> Ya</p>
+								<p><input type="checkbox" disabled {{($syarat2->is_ranap == 'N')?'checked':''}}> Tidak</p>
+							</div>
+						</li>
+					</ul>
+				</td>
+			</tr>
+		</table>
+		
+
+		<table border="1" width="100%">
+			<tr>
+				<td>
+					<p style="text-align:center;">Pasien / Keluarga</p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</td>
+				<td>
+					<p style="text-align:center;">Perawat / Bidan</p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<p style="text-align:center;">{{$syarat->nama_perawat}}</p>
+				</td>
+				<td>
+					<p style="text-align:center;">Dokter yang Merawat</p>
+					<br>
+					<br>
+					<br>
+					<br>
+					<br>
+				</td>
+			</tr>
+		</table>
+
+	{{-- <table id="body" width="100%" border="1">
+		<tr>
+			<td width="5%" style="font-weight: bold;">
+				TGL<br>&<br>JAM
+			</td>
+			<td width=5%" style="font-weight: bold;">
+				Profesional Pemberi Asuhan
+			</td>
+			<td width="35%">
+				<b>HASIL ASESMEN PASIEN DAN PEMBERI PELAYANAN</b><br>
+				<i>(Tulis dengan format SOAP/ADME, disertai sasaran. Tulis Nama, beri Paraf pada akhir catatan)</i>
+			</td>
+			<td width="25%">
+				<b>INSTRUKSI PPA TERMASUK PASCA BEDAH</b><br>
+				<i>(Instruksi Ditulis dengan Rinci dan Jelas)</i>
+			</td>
+			<td width="30%">
+				<b>REVIEW & VERIFIKASI DPJP</b><br>
+				<i>(Tulis Nama, beri Paraf, Tgl., Jam)<br>(DPJP harus membaca / mereview seluruh Rencana Asuhan)</i>
+			</td>
+		</tr>
+	</table> --}}
+</body>
+
+</html>

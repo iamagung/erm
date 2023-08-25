@@ -1,0 +1,825 @@
+<div class="col-lg-12 col-md-12 tahap4" style="padding: 0px">
+	<script src="{!!  asset('adminAsset/js/jquery-1.9.1.min.js') !!}" type="text/javascript"></script>
+
+	<?php
+	$rekap = DB::table('rekap_medik')->where('id_rekapMedik',Session::get('id_rekap'))->first();	
+	?>
+	<div class="col-lg-12 col-md-12">
+		<a href="{{route('cetak4')}}" target="_blank" class="btn pull-right" title="Cetak"><i class="fa fa-print"></i></a>
+    	<a href="{{route('cetak4',['download'=>'pdf'])}}" class="btn pull-right" title="Export"><i class="fa fa-file"></i></a>
+	</div>
+	<form id="tahap4">
+	<div class="clearfix"></div>
+	<!-- TANDA VITAL & ANTROPOMETRI -->
+	<!-- TANDA VITAL & ANTROPOMETRI -->
+	<div class="col-lg-12 col-md-12">
+		<i><b>(*) </b>wajib diisi, jika tidak ada beri <b> - </b></i>
+	</div>
+	<div class="col-lg-12 col-md-12" style="box-shadow: 0px 10px 10px #ddd;background: #fafafa">
+		<div class="col-lg-6 col-md-6">
+			<div class="col-lg-12 col-md-12" style="padding: 0px">
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Nama Panggilan</label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<input type="text" class="form-control" name="nama_panggilan" value="{!! $rekap->nama_panggilan !!}" readonly>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>	
+				<div class="clearfix" style="margin-bottom: 10px"></div>
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Agama</label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<?php
+						$select = ['','','','','','',''];
+						if($rekap->agama_edu!='' || $rekap->agama_edu!=null){
+							switch ($rekap->agama_edu) {
+								case 'Islam':
+									$select[0] = 'selected';
+									break;
+								case 'Kristen':
+									$select[1] = 'selected';
+									break;
+								case 'Katolik':
+									$select[2] = 'selected';
+									break;
+								case 'Hindu':
+									$select[3] = 'selected';
+									break;
+								case 'Buddha':
+									$select[4] = 'selected';
+									break;
+								case 'Kong Hu Cu':
+									$select[5] = 'selected';
+									break;
+								case 'Lainnya':
+									$select[6] = 'selected';
+									break;
+								
+								default:
+									# code...
+									break;
+							}
+						}
+						?>
+						<select disabled class="form-control">
+							<option value="">..:: Pilih Agama ::..</option>
+							<option {{$select[0]}} value="Islam">Islam</option>
+							<option {{$select[1]}} value="Kristen">Kristen</option>
+							<option {{$select[2]}} value="Katolik">Katolik</option>
+							<option {{$select[3]}} value="Hindu">Hindu</option>
+							<option {{$select[4]}} value="Buddha">Buddha</option>
+							<option {{$select[5]}} value="Kong Hu Cu">Kong Hu Cu</option>
+							<option {{$select[6]}} value="Lainnya">Lainnya</option>
+						</select>
+						<input type="hidden" name="agama_edu" value="{{$rekap->agama_edu}}">
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>	
+				<div class="clearfix" style="margin-bottom: 10px"></div>
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Nilai-nilai yang dianut <b style="color: red">(*)</b></label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<input type="text" readonly class="form-control" name="anutan" value="{!! $rekap->anutan !!}">
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>
+				<div class="clearfix" style="margin-bottom: 10px"></div>
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Pendidikan <b style="color: red">(*)</b></label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<?php
+						$select = ['','','','','','','',''];
+						if($rekap->pendidikan_edu!='' || $rekap->pendidikan_edu!=null){
+							switch ($rekap->pendidikan_edu) {
+								case 'SD Se-derajat':
+									$select[0] = 'selected';
+									break;
+								case 'SMP Se-derajat':
+									$select[1] = 'selected';
+									break;
+								case 'SMA Se-derajat':
+									$select[2] = 'selected';
+									break;
+								case 'DIII (Diploma)':
+									$select[3] = 'selected';
+									break;
+								case 'S1 (Sarjana)':
+									$select[4] = 'selected';
+									break;
+								case 'S2 (Master)':
+									$select[5] = 'selected';
+									break;
+								case 'S3 (Doktoral)':
+									$select[6] = 'selected';
+									break;
+								case 'Lainnya':
+									$select[7] = 'selected';
+									break;
+								
+								default:
+									# code...
+									break;
+							}
+						}
+						?>
+						<select disabled class="form-control">
+							<option value="">..:: Pilih Pendidikan ::..</option>
+							<option {{$select[0]}} value="SD Se-derajat">SD Se-derajat</option>
+							<option {{$select[1]}} value="SMP Se-derajat">SMP Se-derajat</option>
+							<option {{$select[2]}} value="SMA Se-derajat">SMA Se-derajat</option>
+							<option {{$select[3]}} value="DIII (Diploma)">DIII (Diploma)</option>
+							<option {{$select[4]}} value="S1 (Sarjana)">S1 (Sarjana)</option>
+							<option {{$select[5]}} value="S2 (Master)">S2 (Master)</option>
+							<option {{$select[6]}} value="S3 (Doktoral)">S3 (Doktoral)</option>
+							<option {{$select[7]}} value="Lainnya">Lainnya</option>
+						</select>
+						<input type="hidden" name="pendidikan_edu" value="{{$rekap->pendidikan_edu}}">
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6">
+			<div class="col-lg-12 col-md-12" style="padding: 0px">
+				<div class="form-group">
+					<?php
+					$check=['checked',''];
+					$display = 'display:none';
+					if($rekap->komunikasi=='' || $rekap->komunikasi=='Tidak ada'){
+						$check=['checked',''];
+					}else{
+						$display='';
+						$check=['','checked'];
+					}
+					?>
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Kesulitan berkomunikasi</label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<label> <input type="radio" {!! $check[0] !!} name="kesulitan_komunikasi" value="Tidak ada"> Tidak Ada</label>
+						<br/>
+						<div class="col-lg-12 col-md-12" style="padding: 0px">
+							<div class="col-lg-4 col-md-4" style="padding: 0px">
+								<label> <input type="radio" {!! $check[1] !!} name="kesulitan_komunikasi" value="Ada"> Ada</label>
+							</div>
+							<div class="col-lg-8 col-md-8">
+								<input type="text" name="kesulitan_komunikasi_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $rekap->komunikasi !!}">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>	
+				<div class="clearfix" style="margin-bottom: 10px"></div>
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Bahasa yang dipakai</label>
+					<?php
+					$check=['','','',''];
+					$display = 'display:none';
+					$isi='';
+					if($rekap->bahasa_edu!=''){
+						$st = explode("+", $rekap->bahasa_edu);
+						for ($i=0; $i < count($st)-1; $i++) { 
+							if($st[$i]=='Indonesia'){
+								$check[0]='checked';
+							}else if($st[$i]=='Mandarin'){
+								$check[1]='checked';
+							}else if($st[$i]=='Inggris'){
+								$check[2]='checked';
+							}else{
+								$display='';
+								$isi = $st[$i];
+								$check[3]='checked';
+							}
+						}
+					}
+					?>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<label> <input type="checkbox" name="bahasa_dipakai[]" value="Indonesia" {!! $check[0] !!}> Indonesia</label>
+						<label style="margin-left: 20px"> <input type="checkbox" name="bahasa_dipakai[]" value="Mandarin" {!! $check[1] !!}> Mandarin</label>
+						<label style="margin-left: 20px"> <input type="checkbox" name="bahasa_dipakai[]" value="Inggris" {!! $check[2] !!}> Inggris</label>
+						<br/>
+						<div class="col-lg-12 col-md-12" style="padding: 0px">
+							<div class="col-lg-4 col-md-4" style="padding: 0px">
+								<label> <input type="checkbox" id="bahasa_dipakai" name="bahasa_dipakai[]" value="Bahasa_lainnya" {!! $check[3] !!}> Lainnya</label>
+							</div>
+							<div class="col-lg-8 col-md-8">
+								<input type="text" name="bahasa_dipakai_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $isi !!}">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>	
+				<div class="clearfix" style="margin-bottom: 10px"></div>
+				<div class="form-group">
+					<label class="col-lg-4 col-md-4 col-sm-12 col-xs-12">Penterjemah</label>
+					<div class="col-lg-6 col-md-6 col-sm-8 col-xs-8">
+						<?php
+						$check=['','checked',''];
+						$display = 'display:none';
+						if($rekap->penterjemah=='perlu'){
+							$check=['checked','',''];
+						}else if($rekap->penterjemah=='tidak perlu' || $rekap->penterjemah==''){
+							$check=['','checked',''];
+						}else{
+							$check=['','','checked'];
+							$display = '';
+						}
+						?>
+						<label> <input type="radio" name="penterjemah" value="perlu" {!! $check[0] !!}> Perlu</label>
+						<label style="margin-left: 20px"> <input type="radio" name="penterjemah" value="tidak perlu" {!! $check[1] !!}> Tidak Perlu</label>
+						<br/>
+						<div class="col-lg-12 col-md-12" style="padding: 0px">
+							<div class="col-lg-4 col-md-4" style="padding: 0px">
+								<label> <input type="radio" id="penterjemah" name="penterjemah" value="lainnya" {!! $check[2] !!}> Lainnya</label>
+							</div>
+							<div class="col-lg-8 col-md-8">
+								<input type="text" name="penterjemah_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $rekap->penterjemah !!}">
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-2 col-md-2 col-sm-4 col-xs-4"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- FORM BAWAH -->
+	<div class="clearfix" style="margin-bottom: 20px"></div>
+	<div class="col-lg-12 col-md-12" style="box-shadow: 0px 10px 10px #ddd;background: #fafafa">
+		<?php
+		$check=['','','','','','','','','',''];
+		$display = 'display:none';
+		$isi='';
+		if($rekap->hambatan_edu!=''){
+			$st = explode("+", $rekap->hambatan_edu);
+			for ($i=0; $i < count($st)-1; $i++) { 
+				if($st[$i]=='Tidak ada hambatan edukasi'){
+					$check[0]='checked';
+				}else if($st[$i]=='Gangguan Penglihatan'){
+					$check[1]='checked';
+				}else if($st[$i]=='Gangguan proses pikir'){
+					$check[2]='checked';
+				}else if($st[$i]=='Motivasi belajar'){
+					$check[3]='checked';
+				}else if($st[$i]=='Gangguan pendengaran'){
+					$check[4]='checked';
+				}else if($st[$i]=='Hambatan bahasa'){
+					$check[5]='checked';
+				}else if($st[$i]=='Batasan jasmani dan kognitif'){
+					$check[6]='checked';
+				}else if($st[$i]=='Gangguan emosional'){
+					$check[7]='checked';
+				}else if($st[$i]=='Kemampuan membaca'){
+					$check[8]='checked';
+				}else{
+					$display='';
+					$isi = $st[$i];
+					$check[9]='checked';
+				}
+			}
+		}
+		?>
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<label> <input type="checkbox" {!! $check[0] !!} name="hambatan[]" value="Tidak ada hambatan edukasi"> Tidak ada hambatan edukasi</label>
+			<br/><label> <input type="checkbox" {!! $check[1] !!} name="hambatan[]" value="Gangguan Penglihatan"> Gangguan Penglihatan</label>
+			<br/><label> <input type="checkbox" {!! $check[2] !!} name="hambatan[]" value="Gangguan proses pikir"> Gangguan proses pikir</label>
+			<br/><label> <input type="checkbox" {!! $check[3] !!} name="hambatan[]" value="Motivasi belajar"> Motivasi belajar</label>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<label> <input type="checkbox" {!! $check[4] !!} name="hambatan[]" value="Gangguan pendengaran"> Gangguan pendengaran</label>
+			<br/><label> <input type="checkbox" {!! $check[5] !!} name="hambatan[]" value="Hambatan bahasa"> Hambatan bahasa</label>
+			<br/><label> <input type="checkbox" {!! $check[6] !!} name="hambatan[]" value="Batasan jasmani dan kognitif"> Batasan jasmani dan kognitif</label>
+		</div>
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+			<label> <input type="checkbox" {!! $check[7] !!} name="hambatan[]" value="Gangguan emosional"> Gangguan emosional</label>
+			<br/><label> <input type="checkbox" {!! $check[8] !!} name="hambatan[]" value="Kemampuan membaca"> Kemampuan membaca</label>
+		</div>
+		<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<div class="col-lg-12 col-md-12" style="padding: 0px">
+				<div class="col-lg-4 col-md-4" style="padding: 0px">
+					<label> <input type="checkbox" {!! $check[9] !!} id="hambatan" name="hambatan[]" value="lainnya"> Hambatan lainnya</label>
+				</div>
+				<div class="col-lg-8 col-md-8">
+					<input type="text" name="hambatan_lain" class="form-control" style="border-radius: 10px !important;{!! $display !!}" value="{!! $isi !!}">
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<label>Kesediaan pasien/ keluarga untuk menerima informasi yang diberikan</label>
+		</div>
+		<?php
+		$check=['checked',''];
+		if($rekap->kesediaan=='' || $rekap->kesediaan=='Ya'){
+			$check=['checked',''];
+		}else{
+			$check=['','checked'];
+		}
+		?>
+		<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+			<label> <input type="radio" {!! $check[0] !!} name="kesediaan" value="Ya" checked> Ya</label>
+			<label style="margin-left: 10px"> <input type="radio" {!! $check[1] !!} value="Tidak" name="kesediaan"> Tidak</label>
+		</div>
+	</div>
+	<!-- FORM BAWAH -->
+	<div class="clearfix" style="margin-bottom: 20px"></div>
+	<div class="col-lg-12 col-md-12" style="padding: 0px">
+		<?php
+		$check=['','','','','','','','','','','','','',''];
+		$display = 'display:none';
+		$isi='';
+		if($rekap->program!=''){
+			$st = explode("+", $rekap->program);
+			for ($i=0; $i < count($st)-1; $i++) { 
+				if($st[$i]=='1'){
+					$check[0]='checked';
+				}else if($st[$i]=='2'){
+					$check[1]='checked';
+				}else if($st[$i]=='3'){
+					$check[2]='checked';
+				}else if($st[$i]=='4'){
+					$check[3]='checked';
+				}else if($st[$i]=='5'){
+					$check[4]='checked';
+				}else if($st[$i]=='6'){
+					$check[5]='checked';
+				}else if($st[$i]=='7'){
+					$check[6]='checked';
+				}else if($st[$i]=='8'){
+					$check[7]='checked';
+				}else if($st[$i]=='9'){
+					$check[8]='checked';
+				}else if($st[$i]=='10'){
+					$check[9]='checked';
+				}else if($st[$i]=='11'){
+					$check[10]='checked';
+				}else if($st[$i]=='12'){
+					$check[11]='checked';
+				}else if($st[$i]=='13'){
+					$check[12]='checked';
+				}else{
+					$display='';
+					$isi = $st[$i];
+					$check[13]='checked';
+				}
+			}
+		}
+		?>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Program Edukasi</th>
+					<th>Bidang Disiplin</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="1" {!! $check[0] !!}>Kondisi medis dan diagnosa</label></td>
+					<td>Medis</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="2" {!! $check[1] !!}>Rencana perawatan dan pengobatan</label></td>
+					<td>Medis</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="3" {!! $check[2] !!}>Pegisian Informed Consent</label></td>
+					<td>Medis</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="4" {!! $check[3] !!}>Perawatan luka</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="5" {!! $check[4] !!}>Perawatan lanjutan setelah pasien pulang</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="6" {!! $check[5] !!}>Penggunaan alat medis</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="7" {!! $check[6] !!}>Manajemen nyeri</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="8" {!! $check[7] !!}>Teknik cuci tangan</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="9" {!! $check[8] !!}>Resiko pasien jatuh</label></td>
+					<td>Keperawatan</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="10" {!! $check[9] !!}>Diet/ nutrisi</label></td>
+					<td>Dokter Gizi/ Ahli Gizi</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="11" {!! $check[10] !!}>Penggunaan obat secara aman dan efektif</label></td>
+					<td>Farmasi</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="12" {!! $check[11] !!}>Interaksi obat dan makanan</label></td>
+					<td>Farmasi</td>
+				</tr>
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="13" {!! $check[12] !!}>Teknik rehabilitasi</label></td>
+					<td>Rehabilitasi Medis</td>
+				</tr>					
+				<tr>
+					<td><label><input type="checkbox" name="program[]" value="lainnya" {!! $check[13] !!} id="edukasi">Edukasi lainnya</label></td>
+					<td><input type="text" class="form-control" style="{!! $display !!}" name="edukasi_lain" value="{!! $isi !!}"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="clearfix" style="margin-bottom: 10px"></div>
+	<div class="col-lg-12 cl-md-12" style="text-align: center;">
+		<a href="#" onclick="simpantahap4()" class="btn btn-success">Simpan</a>
+	</div>
+	<div class="clearfix" style="margin-bottom: 10px"></div>
+	<!-- FORM BAWAH -->
+	<div id="edukasi_table">
+	<?php
+	$edu = DB::table('edukasi_rm')->where('rekapMedik_id',Session::get('id_rekap'))->get();
+	if(count($edu)!=0){
+		?>
+		<div class="clearfix" style="margin-bottom: 10px"></div>
+		<h3>Edukasi</h3>
+		<table class="table table-bordered">
+			<tr>
+				<th style="width: 15%">Edukator (Bidang edukasi)</th>
+				<th style="width: 10%">Yang diedukasi</th>
+				<th style="width: 10%">Metode</th>
+				<th style="width: 40%">Materi</th>
+				<th style="width: 30%">Response</th>
+				<th style="width: 30%">Aksi</th>
+			</tr>
+			<?php
+			foreach ($edu as $key) {
+				?>
+				<tr>
+					<td>{{$key->edukator}} ({{$key->disiplin}})</td>
+					<td>
+						<ul>
+						<?php
+						$metode = explode("+", $key->edukasi_ke);
+						for($i=0;$i<count($metode)-1;$i++){
+							echo "<li>".$metode[$i]."</li>";
+						}
+						?>
+						</ul>
+					</td>
+					<td>
+						<ul>
+						<?php
+						$metode = explode("+", $key->metode_edukasi);
+						for($i=0;$i<count($metode)-1;$i++){
+							echo "<li>".$metode[$i]."</li>";
+						}
+						?>
+						</ul>
+					</td>
+					<td>{{$key->materi_edukasi}}</td>
+					<td>
+						<ul>
+						<?php
+						$metode = explode("+", $key->response_edukasi);
+						for($i=0;$i<count($metode)-1;$i++){
+							echo "<li>".$metode[$i]."</li>";
+						}
+						?>
+						</ul>
+					</td>
+					<td><a href="#" onclick="hapusEdukasi({{$key->id_edukasi}})" class="btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
+				</tr>
+				<?php
+			}
+			?>
+		</table>
+		<?php
+	}
+	?>
+	</div>
+	
+	<div class="clearfix" style="margin-bottom: 10px"></div>
+	<div class="col-lg-12 col-md-12" style="box-shadow: 0px 10px 10px #ddd;background: #fafafa">
+		<div class="clearfix" style="margin-bottom: 10px"></div>
+		<h3>Form Edukasi</h3>
+		<table class="table table-bordered">
+			<tr>
+				<td>Nama Edukator</td>
+				<td><input type="text" name="nama_edukator" class="form-control" placeholder="Ex: Dr. xxxxxxxxx SPPK"></td>
+			</tr>
+			<tr>
+				<td>Bidang Disiplin</td>
+				<td><input type="text" name="bidang_edukator" class="form-control" placeholder="Medis, Keperawatan, Dokter Gizi, Farmasi, Rehabilitasi"></td>
+			</tr>
+		</table>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th>Siapa yang diedukasi</th>
+					<th>Metode Edukasi</th>
+					<th>Respon</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<?php
+					$check=['','','','',''];
+					$display = 'display:none';
+					$isi='';
+					if($rekap->yang_edu!=''){
+						$st = explode("+", $rekap->yang_edu);
+						for ($i=0; $i < count($st)-1; $i++) { 
+							if($st[$i]=='1'){
+								$check[0]='checked';
+							}else if($st[$i]=='2'){
+								$check[1]='checked';
+							}else if($st[$i]=='3'){
+								$check[2]='checked';
+							}else if($st[$i]=='4'){
+								$check[3]='checked';
+							}else if($st[$i]=='5'){
+								$check[4]='checked';
+							}
+						}
+					}
+					?>
+					<td>
+						<label><input type="checkbox" class="yang_edu" {{$check[0]}} name="yang_edu[]" value="Pasien">Pasien</label>
+						<br/><label><input type="checkbox" class="yang_edu" {{$check[1]}} name="yang_edu[]" value="Ayah/ Ibu">Ayah/ Ibu</label>
+						<br/><label><input type="checkbox" class="yang_edu" {{$check[2]}} name="yang_edu[]" value="Suami/ Istri">Suami/ Istri</label>
+						<br/><label><input type="checkbox" class="yang_edu" {{$check[3]}} name="yang_edu[]" value="Anak">Anak</label>
+						<br/><label><input type="checkbox" class="yang_edu" {{$check[4]}} name="yang_edu[]" value="Lainnya">Lainnya</label>
+					</td>
+					<?php
+					$check=['','','','',''];
+					$display = 'display:none';
+					$isi='';
+					if($rekap->metode_edu!=''){
+						$st = explode("+", $rekap->metode_edu);
+						for ($i=0; $i < count($st)-1; $i++) { 
+							if($st[$i]=='1'){
+								$check[0]='checked';
+							}else if($st[$i]=='2'){
+								$check[1]='checked';
+							}else if($st[$i]=='3'){
+								$check[2]='checked';
+							}else if($st[$i]=='4'){
+								$check[3]='checked';
+							}else if($st[$i]=='5'){
+								$check[4]='checked';
+							}
+						}
+					}
+					?>
+					<td>
+						<label><input type="checkbox" class="metode_edu" {{$check[0]}} name="metode_edu[]" value="Diskusi">Diskusi</label>
+						<br/><label><input type="checkbox" class="metode_edu" {{$check[1]}} name="metode_edu[]" value="Peragaan">Peragaan</label>
+						<br/><label><input type="checkbox" class="metode_edu" {{$check[2]}} name="metode_edu[]" value="Selebaran">Selebaran</label>
+						<br/><label><input type="checkbox" class="metode_edu" {{$check[3]}} name="metode_edu[]" value="Audio Visual">Audio Visual</label>
+						<br/><label><input type="checkbox" class="metode_edu" {{$check[4]}} name="metode_edu[]" value="Lainnya">Lainnya</label>
+					</td>
+					<?php
+					$check=['','','','',''];
+					$display = 'display:none';
+					$isi='';
+					if($rekap->respon_edu!=''){
+						$st = explode("+", $rekap->respon_edu);
+						for ($i=0; $i < count($st)-1; $i++) { 
+							if($st[$i]=='1'){
+								$check[0]='checked';
+							}else if($st[$i]=='2'){
+								$check[1]='checked';
+							}else if($st[$i]=='3'){
+								$check[2]='checked';
+							}else if($st[$i]=='4'){
+								$check[3]='checked';
+							}else if($st[$i]=='5'){
+								$check[4]='checked';
+							}
+						}
+					}
+					?>
+					<td>
+						<label><input type="checkbox" class="response_edu" {{$check[0]}} name="respon_edu[]" value="Tidak respon sama sekali (tak ada antusiasme dan keinginan belajar)">Tidak respon sama sekali (tak ada antusiasme dan keinginan belajar)</label>
+						<br/><label><input type="checkbox" class="response_edu" {{$check[1]}} name="respon_edu[]" value="Tidak paham (ingin belajar tap[i kesulitan mengerti)">Tidak paham (ingin belajar tap[i kesulitan mengerti)</label>
+						<br/><label><input type="checkbox" class="response_edu" {{$check[2]}} name="respon_edu[]" value="Paham hal yang diajarkan, tapi tidak bisa menjalaskan sendiri">Paham hal yang diajarkan, tapi tidak bisa menjalaskan sendiri</label>
+						<br/><label><input type="checkbox" class="response_edu" {{$check[3]}} name="respon_edu[]" value="Dapat menjelaskan apa yang diajarkan, tapi harus dibantu edukator">Dapat menjelaskan apa yang diajarkan, tapi harus dibantu edukator</label>
+						<br/><label><input type="checkbox" class="response_edu" {{$check[4]}} name="respon_edu[]" value="Dapat menjelaskan apa yang telah diajarkan tanpa dibantu">Dapat menjelaskan apa yang telah diajarkan tanpa dibantu</label>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3">
+						<textarea name="materi_edu" style="width: 100%;height: 300px" placeholder="Materi Edukasi">{{$rekap->materi_edu}}</textarea>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="clearfix" style="margin-bottom: 10px"></div>
+	</div>
+	<div class="clearfix" style="margin-bottom: 10px"></div>
+	<div class="col-lg-12 cl-md-12" style="text-align: center;">
+		<a href="#" onclick="simpanEdukasi()" class="btn btn-success">Simpan</a>
+	</div>
+	</form>
+</div>
+<div class="clearfix"></div>
+@section('js_tahap4')
+<script type="text/javascript">
+
+	function simpanEdukasi(){
+		var error = 0;
+		var materi = $('textarea[name=materi_edu]').val();
+		if(materi==''){
+			swal("Materi harus diisi");
+			error++;
+		}
+
+		var response='';
+		var response_edu = $('.response_edu:checked');
+		for(var i=0;i<response_edu.length;i++){
+			response += response_edu[i].value+'+';
+		}
+		if(response==''){
+			swal('response harus dipilih');
+			error++;
+		}
+
+		var metode='';
+		var metode_edu = $('.metode_edu:checked');
+		for(var i=0;i<metode_edu.length;i++){
+			metode += metode_edu[i].value+'+';
+		}
+		if(metode==''){
+			swal('Metode harus dipilih');
+			error++;
+		}
+
+		var yang='';
+		var yang_edu = $('.yang_edu:checked');
+		for(var i=0;i<yang_edu.length;i++){
+			yang += yang_edu[i].value+'+';
+		}
+		if(yang==''){
+			swal('Yang diedukasi harus dipilih');
+			error++;
+		}
+
+		var edukator = $('input[name=nama_edukator]').val();
+		var disiplin = $('input[name=bidang_edukator]').val();
+
+		if(disiplin==''){
+			swal('Bidang disiplin edukator harus diisi');
+			error++;
+		}
+
+		if(edukator==''){
+			swal("Nama edukator harus diisi");
+			error++;
+		}
+
+		if(error==0){
+			$.post("{{route('simpanEdu')}}",{materi:materi,metode:metode,response:response,yang:yang,disiplin:disiplin,edukator:edukator},function(data){
+				if(data.status=='success'){
+					swal("Success !",'Data berhasil ditambahkan','success');
+					$("#edukasi_table").load(location.href + " #edukasi_table>*", "");
+				}else{
+					swal("Whoops !",'Data tidak berhasil ditambahkan','error');
+				}
+			});
+		}
+	}
+
+	function simpantahap4(){
+		var i = 0;
+		if($('input[name=edukasi_lain]').is(':visible')){
+			var isi = $('input[name=edukasi_lain]').val();
+			if(isi==''){
+				swal('Bidang disiplin lainnya harus diisi');
+				i++;
+			}
+		}
+
+		if($('input[name=hambatan_lain]').is(':visible')){
+			var isi = $('input[name=hambatan_lain]').val();
+			if(isi==''){
+				swal('Hambatan lainnya harus diisi');
+				i++;
+			}
+		}
+
+
+		if($('input[name=bahasa_dipakai_lain]').is(':visible')){
+			var isi = $('input[name=bahasa_dipakai_lain]').val();
+			if(isi==''){
+				swal('Bahasa harus diisi');
+				i++;
+			}
+		}
+
+		if($('input[name=penterjemah_lain]').is(':visible')){
+			var isi = $('input[name=penterjemah_lain]').val();
+			if(isi==''){
+				swal('Penterjemah harus diisi');
+				i++;
+			}
+		}
+
+		var kesulitan = $('input[name=kesulitan_komunikasi]:checked').val();
+		if(kesulitan=='Ada'){
+			var isiKesulitan = $('input[name=kesulitan_komunikasi_lain]').val();
+			if(isiKesulitan==''){
+				swal('Kesulitan bahasa harus diisi');
+				i++;
+			}
+		}
+
+		var data = $('form#tahap4').serialize();
+		if(i==0){
+			$.post("{!! route('simpanTahap4') !!}",data,function(data){
+				if(data.status='success'){
+					swal('Success');
+					location.reload();
+				}else{
+					swal("Whoops !",'Data tidak berhasil ditambahkan','error');
+				}
+			});
+		}
+	}
+
+	$('input[name=kesulitan_komunikasi]').change(function(){
+		var kes = $('input[name=kesulitan_komunikasi]:checked').val();
+			// alert(kes);
+		if(kes=='Ada'){
+			$('input[name=kesulitan_komunikasi_lain]').show();
+			$('input[name=kesulitan_komunikasi_lain]').attr('required','required');
+		}else{
+			$('input[name=kesulitan_komunikasi_lain]').hide();
+			$('input[name=kesulitan_komunikasi_lain]').removeAttr('required');
+		}
+	});
+
+	$('#bahasa_dipakai').change(function(){
+		if($('input[name=bahasa_dipakai_lain]').is(':visible')){
+			$('input[name=bahasa_dipakai_lain]').hide();
+			$('input[name=bahasa_dipakai_lain]').removeAttr('required');
+		}else{
+			$('input[name=bahasa_dipakai_lain]').show();
+			$('input[name=bahasa_dipakai_lain]').attr('required','required');
+		}
+	});
+
+	$('#penterjemah').change(function(){
+		if($('input[name=penterjemah_lain]').is(':visible')){
+			$('input[name=penterjemah_lain]').hide();
+			$('input[name=penterjemah_lain]').removeAttr('required');
+		}else{
+			$('input[name=penterjemah_lain]').show();
+			$('input[name=penterjemah_lain]').attr('required','required');
+		}
+	});
+
+	$('#hambatan').change(function(){
+		if($('input[name=hambatan_lain]').is(':visible')){
+			$('input[name=hambatan_lain]').hide();
+			$('input[name=hambatan_lain]').removeAttr('required');
+		}else{
+			$('input[name=hambatan_lain]').show();
+			$('input[name=hambatan_lain]').attr('required','required');
+		}
+	});
+
+	$('#edukasi').change(function(){
+		if($('#edukasi').is(':checked')){
+			$('input[name=edukasi_lain]').attr('required','required');
+			$('input[name=edukasi_lain]').show();
+		}else{
+			$('input[name=edukasi_lain]').removeAttr('required');
+			$('input[name=edukasi_lain]').hide();
+		}
+	});
+
+	function hapusEdukasi(id){
+		swal({
+        title: "Anda yakin?",
+        text: "Data akan dihapus!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#DD6B55',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal',
+        closeOnConfirm: false,
+        //closeOnCancel: false
+        },
+        function(){
+            $.post("{!! route('hapusEdukasi') !!}",{id:id}).done(function(data){
+                if(data.status=='success'){
+					$("#edukasi_table").load(location.href + " #edukasi_table>*", "");
+					swal('Data berhasil dihapus');
+                }else{
+                    swal("Gagal!", "Data gagal dihapus!", "error");
+                }
+            });
+        });
+	}
+</script>
+@stop

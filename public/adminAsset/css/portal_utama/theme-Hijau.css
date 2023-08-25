@@ -1,0 +1,191 @@
+
+.scrollToTop{
+  background-color: #0eb50a;
+  color: #fff;
+}
+.scrollToTop:hover,.scrollToTop:focus{
+  background-color: #fff;
+  color: #0eb50a;
+  border-color: 1px solid #0eb50a;
+}
+.top_nav li a:hover{
+  color: #0eb50a !important;
+}
+.search_form input[type="submit"]:hover{
+  background-color: #0eb50a;
+}
+.navbar-default {
+  background-color: #0eb50a;
+  border-color: #0eb50a;  
+}
+.custom_nav li a:hover{ 
+  border-color: #0eb50a;  
+}
+.navbar-default .navbar-nav > li > a:hover,.navbar-default .navbar-nav > li > a:focus{
+  background-color: #fff;
+  color: #0eb50a;
+  border-color: #0eb50a;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+  background-color: #fff;
+ color: #0eb50a;
+ border-color: #0eb50a;
+  
+}
+.navbar-nav > li > .dropdown-menu {
+  margin-top: 1px;
+  background-color: #0eb50a;
+}
+.dropdown-menu > li > a:hover,.dropdown-menu > li > a:focus{
+  background-color: #fff;
+  color: #0eb50a;
+  border-color: #0eb50a; 
+  padding-left: 20px;
+}
+.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+  color: #fff;
+}
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+  background-color: #fcc259;
+
+}
+ .slick-prev, .slick-next {
+  background-color: #0eb50a;
+}  
+.slick-prev:hover, .slick-next:hover {
+ opacity: 0.80;
+}
+.bold_line span {
+  background-color: #0eb50a;
+}
+.catg1_nav li .post_titile a:hover{
+  color: #0eb50a;
+}
+.content_middle_middle:after {
+  background-color: #0eb50a; 
+}
+.content_middle_middle:before {
+  background-color: #0eb50a;  
+}
+.single_featured_slide>h2 a:hover{
+  color: #0eb50a;
+}
+.catg_titile a:hover{
+  color: #0eb50a;
+}
+span.meta_date:hover,span.meta_comment:hover,span.meta_more:hover,span.meta_comment a:hover,span.meta_more a:hover{
+  color: #0eb50a;
+}
+.media-heading a:hover{
+  color: #0eb50a;
+}
+.single_bottom_rightbar>h2{
+  border-bottom: 3px solid #0eb50a;
+}
+.nav-tabs {
+  border-bottom: 1px solid #0eb50a;
+}
+.nav-tabs > li.active > a,.nav-tabs > li.active > a:focus {  
+  color: #0eb50a;
+}
+.nav-tabs > li.active > a:hover{
+  color: #0eb50a !important;
+}
+.nav-tabs > li > a:hover{
+  background-color: #0eb50a; 
+  color: #fff !important; 
+}
+.single_bottom_rightbar ul li>a:hover{
+  color: #0eb50a;
+}
+.labels_nav li a:hover{
+  background-color: #0eb50a;
+}  
+.breadcrumb {
+  background-color: #0eb50a;
+  border: 2px solid #0eb50a;
+}
+.single_page_area > h2 {
+  border-left: 5px solid #0eb50a;
+}
+.post_commentbox a:hover,.post_commentbox span:hover{
+  color: #0eb50a;
+}
+.single_page_content blockquote {
+  border-color: #eee #0eb50a;
+  border-left: 5px solid #0eb50a;
+}
+.single_page_content ul li:before {
+  background: none repeat scroll 0 0 #0eb50a;
+}
+.post_pagination {
+  border-bottom: 2px solid #0eb50a;
+  border-top: 2px solid #0eb50a;
+}
+.prev {  
+  border-right: 2px solid #0eb50a;
+}
+.angle_left {
+  background-color: #0eb50a;
+}
+.angle_right {
+  background-color: #0eb50a;
+}
+.error_page_content h1:after, .error_page_content h1:before {  
+  border: 2px solid #0eb50a;
+}
+.error_page_content p {
+  border-bottom: 2px solid #0eb50a;
+  border-top: 2px solid #0eb50a;
+}
+.error_page_content p:after {
+  border-top: 1px solid #0eb50a;  
+}
+.error_page_content p:before {
+  border-top: 1px solid #0eb50a;  
+}
+.error_page_content p>a:hover{
+  color: #0eb50a;
+}
+.our_office {
+  border-top: 2px solid #0eb50a;
+}
+.contact_us{
+ border-top: 2px solid #0eb50a;
+}
+.contact_form input[type="submit"]:hover{
+  background-color: #0eb50a;
+  color: #fff;
+  border-color: #0eb50a;
+}
+.our_office:before {
+  border-bottom: 1px solid #0eb50a;  
+}
+.contact_us:before {
+  border-bottom: 1px solid #0eb50a;  
+}
+.single_footer_top > h2 {
+  color: #0eb50a;
+}
+.similar_post h2 i{
+  color: #0eb50a;
+}
+
+.read_more {
+  border-bottom: 4px solid #0eb50a;
+  bottom: 0;
+  display: block;
+  left: 0;
+  position: absolute;
+  text-align: right;
+  width: 100%;
+}
+.read_more > span {
+  background-color: #0eb50a;
+  color: #fff;
+  display: inline-block;
+  padding: 5px 10px;
+}
+.breaking_news{
+  color: #0eb50a;
+}
